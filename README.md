@@ -1,0 +1,1 @@
+This project implements a simple obstacle detection and scanning system using an Arduino Uno, an IR obstacle sensor, and a servo motor.
