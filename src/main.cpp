@@ -1,65 +1,22 @@
-#include <Servo.h>
 #include <Arduino.h>
+#include <Servo.h>
+#include "obstacle.h" // Include your new library
 
-Servo myservo;
+Servo myservo; // Define the servo here
 
-bool done = false;
-int angles[5]={0,45,90,135,180};
-int ir_values[5];
-int high[1] ;
-
-
-int irPin = 8;      // IR sensor OUT connected to pin 8
-int irValue = 0;    // variable to store IR value
-
-void setup()
-{
-  myservo.attach(7);      // Servo signal connected to pin 7
-  pinMode(irPin, INPUT);  
-  myservo.write(90);    // Start at center
-  Serial.begin(9600);
-}
-
-void loop()
-{
-  irValue = digitalRead(irPin);
-
-  if(irValue == LOW)   // object detected
-  {
-    Serial.println("Object detected! Scanning...");
-
-    for(int i = 0; i < 5; i++)
-    {
-      myservo.write(angles[i]);
-      delay(500);
-
-      ir_values[i] = digitalRead(irPin);
-
-      Serial.print("Angle: ");
-      Serial.print(angles[i]);
-      Serial.print("  IR: ");
-      Serial.println(ir_values[i]);
-    }
-
-    Serial.println("Angles with NO object detected:");
-
-    for(int i = 0; i < 5; i++)
-    {
-      if(ir_values[i] == HIGH)
-      { 
-        high[0]=angles[i];
-        Serial.print("no Object at angle: ");
-        Serial.println(angles[i]);
-      }
-    }
-
+void setup() {
+    myservo.attach(7);
+    pinMode(8, INPUT); // Ensure IR pin is set to input
     myservo.write(90);
-    Serial.println("---------------------------");
-    Serial.println("conclusion of search : ");
-    Serial.print(high[0]);
-
-  }
-  delay(4000);
-
+    Serial.begin(9600);
 }
 
+void loop() {
+    int anglefollow = back_obstacle_avoid();
+    
+    if (anglefollow != -1) {
+        Serial.print("Clear Path Found at: ");
+        Serial.println(anglefollow);
+    }
+    delay(500);
+}
