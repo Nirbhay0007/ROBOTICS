@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 // FUNCTION DEFINITION 
-int emergency_break();
+void emergency_break();
 // variable delaration
 extern int rescue;
 #endif

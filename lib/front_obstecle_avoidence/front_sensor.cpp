@@ -1,4 +1,5 @@
 #include "front_sensor.h"
+#include "run_motor.h"
 
 // Shield-compatible pins for the ultrasonic sensor
 const int trigPin = A5; 
@@ -13,14 +14,23 @@ void check_front_obstacle() {
 
 
     if (current_dist < 30) {
-
-        Serial.println("--- Front Obstacle Detected! Scanning... ---");
-
+        stop();
+        moveBackward(250);
+        delay(2000);
         front_servo_scan();
+        delay(200);
 
-        Serial.print("Clear path found at angle: ");
 
-        Serial.println(best_front);
+        switch(best_front)
+        
+            {
+        case 0: turn0();   break; // 90 Left
+        case 45: turn45();  break; // 45 Left
+        case 90: turn90();  break; // Straight (or skip)
+        case 135: turn135(); break; // 45 Right
+        case 180: turn180(); break; // 90 Right
+    
+        }
 
     }
 
@@ -38,7 +48,7 @@ void front_servo_scan() {
 
         // If distance is greater than 50cm, mark this as a clear path
 
-        if (measured_dist > 50) {
+        if (measured_dist > 80) {
 
             best_front = scan_angles[i];
 
@@ -52,7 +62,7 @@ void front_servo_scan() {
 
     frontServo.write(90);
 
-    delay(2000);
+    delay(200);
 
 }
 

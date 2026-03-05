@@ -7,6 +7,7 @@
 // 1.Function Declaration
 
 int back_obstacle_avoid();
+void backCheck();
 // 2. Share the Servo object so both files can see it
 extern Servo backServo; 
 
