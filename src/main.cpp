@@ -1,22 +1,41 @@
 #include <Arduino.h>
 #include <Servo.h>
-#include "obstacle.h" // Include your new library
+// #include "front_sensor.h"
+// #include "back_obstacle.h"
+// #include "emergency_stop.h"
 
-Servo myservo; // Define the servo here
+Servo frontServo;
+Servo backServo;
+// Servo backServo; // Uncomment if needed
 
 void setup() {
-    myservo.attach(7);
-    pinMode(8, INPUT); // Ensure IR pin is set to input
-    myservo.write(90);
     Serial.begin(9600);
+    
+    // Attach servo to SER1 (Pin 9)
+    frontServo.attach(10); 
+    frontServo.write(90);
+
+    backServo.attach(9);
+    backServo.write(90);
+
+    // Initialize Sensor Pins
+    pinMode(A5, OUTPUT); // Trig
+    pinMode(A4, INPUT);  // Echo
+
+    
+    Serial.println("Robot Ready: Obstacle Avoidance Active");
 }
 
 void loop() {
-    int anglefollow = back_obstacle_avoid();
+    // Continuously check for obstacles
+    // Serial.println(emergency_break());
     
-    if (anglefollow != -1) {
-        Serial.print("Clear Path Found at: ");
-        Serial.println(anglefollow);
-    }
-    delay(500);
+    // Serial.println(back_obstacle_avoid());
+    // check_front_obstacle();
+    // // Optional: Print live distance every 500ms
+    // // Serial.print("Current: ");
+    // // Serial.println(Ultrsonic_trigger());
+    
+    
+    delay(200);
 }
